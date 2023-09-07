@@ -43,7 +43,9 @@ namespace JWT.Auth
 					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"])),
 					ValidateLifetime = true,
-					ClockSkew = TimeSpan.Zero
+					ClockSkew = TimeSpan.Zero,
+					ValidateAudience = false,
+					ValidateIssuer = false
 				};
 			});
 

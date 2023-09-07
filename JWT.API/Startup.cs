@@ -22,10 +22,8 @@ namespace JWT.API
 		{
 
 			services.AddControllers();
-			services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "JWT.API", Version = "v1" });
-			});
+
+			services.ConfigureSwagger();
 
 			services.ConfigureJWTAuthenticationServices(Configuration);
 		}
