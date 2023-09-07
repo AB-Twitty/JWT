@@ -10,11 +10,13 @@ namespace JWT.Auth.Services.Implementation
 	{
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly SignInManager<IdentityUser> _signInManager;
+		private readonly IJwtTokenService _jwtTokenService;
 
-		public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+		public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IJwtTokenService jwtTokenService)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_jwtTokenService = jwtTokenService;
 		}
 
 		public async Task<AuthResponse> Login(AuthRequest request)
@@ -34,7 +36,7 @@ namespace JWT.Auth.Services.Implementation
 				Id = user.Id,
 				Email = user.Email,
 				Username = user.UserName,
-				Token = null
+				Token = await _jwtTokenService.GenerateToken(user)
 			};
 
 			return response;
