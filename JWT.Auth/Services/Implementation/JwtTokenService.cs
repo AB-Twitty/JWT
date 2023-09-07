@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,5 +38,15 @@ namespace JWT.Auth.Services.Implementation
 
 			return new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken);
         }
+
+		public Task<string> GenerateRefreshToken()
+		{
+			var byteArray = new byte[64];
+			using(var rng = RandomNumberGenerator.Create())
+			{
+				rng.GetBytes(byteArray);
+				return Task.FromResult(Convert.ToBase64String(byteArray));
+			}
+		}
 	}
 }

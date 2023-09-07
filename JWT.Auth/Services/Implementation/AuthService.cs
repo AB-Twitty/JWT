@@ -36,7 +36,8 @@ namespace JWT.Auth.Services.Implementation
 				Id = user.Id,
 				Email = user.Email,
 				Username = user.UserName,
-				Token = await _jwtTokenService.GenerateToken(user)
+				Token = await _jwtTokenService.GenerateToken(user),
+				RefreshToken = await _jwtTokenService.GenerateRefreshToken()
 			};
 
 			return response;

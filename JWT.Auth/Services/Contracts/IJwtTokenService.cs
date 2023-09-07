@@ -6,5 +6,7 @@ namespace JWT.Auth.Services.Contracts
 	public interface IJwtTokenService
 	{
 		Task<string> GenerateToken(IdentityUser user);
+
+		Task<string> GenerateRefreshToken();
 	}
 }

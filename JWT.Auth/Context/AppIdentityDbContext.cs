@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using JWT.Auth.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -18,5 +19,7 @@ namespace JWT.Auth.Context
 
 			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		}
-	}
+
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+    }
 }
