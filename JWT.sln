@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWT.API", "JWT.API\JWT.API.csproj", "{48FE316C-E425-4424-A152-B696F814BC69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWT.Auth", "JWT.Auth\JWT.Auth.csproj", "{C63E8D36-982A-486D-B94A-3B36A1FB7A09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWT.Auth", "JWT.Auth\JWT.Auth.csproj", "{C63E8D36-982A-486D-B94A-3B36A1FB7A09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWT.API", "JWT.API\JWT.API.csproj", "{66E1D6CF-B94F-497E-9CAB-1E1970053788}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48FE316C-E425-4424-A152-B696F814BC69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48FE316C-E425-4424-A152-B696F814BC69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48FE316C-E425-4424-A152-B696F814BC69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48FE316C-E425-4424-A152-B696F814BC69}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C63E8D36-982A-486D-B94A-3B36A1FB7A09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C63E8D36-982A-486D-B94A-3B36A1FB7A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C63E8D36-982A-486D-B94A-3B36A1FB7A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C63E8D36-982A-486D-B94A-3B36A1FB7A09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E1D6CF-B94F-497E-9CAB-1E1970053788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E1D6CF-B94F-497E-9CAB-1E1970053788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E1D6CF-B94F-497E-9CAB-1E1970053788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E1D6CF-B94F-497E-9CAB-1E1970053788}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
