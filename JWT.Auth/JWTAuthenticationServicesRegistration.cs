@@ -32,6 +32,8 @@ namespace JWT.Auth
 
 			services.AddScoped<IJwtTokenService, JwtTokenService>();
 
+			services.AddTransient<IClaimService, ClaimService>();
+
 			services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
