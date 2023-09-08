@@ -4,14 +4,16 @@ using JWT.Auth.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JWT.Auth.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    partial class AppIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230908173526_UpdateUserTableData")]
+    partial class UpdateUserTableData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,6 +170,24 @@ namespace JWT.Auth.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a3f1f33a-2f89-49e7-bad1-71075a13f7d1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a19d03cb-8b52-41f6-93af-1af5b76ae717",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAELJ6m3UQWz8Zm54XueiZRQkY2ok30WRfIFPLtMs5CHVpZVSYaIurrFEgPUgVBYDqOA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "61e403c4-20c7-4f35-b953-312048c80210",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

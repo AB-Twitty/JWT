@@ -17,9 +17,9 @@ namespace JWT.Auth.Context
 		{
 			base.OnModelCreating(builder);
 
-			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+			//builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		}
 
-        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+        public virtual DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
     }
 }

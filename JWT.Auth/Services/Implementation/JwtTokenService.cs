@@ -23,14 +23,16 @@ namespace JWT.Auth.Services.Implementation
 		private readonly IClaimService _claimService;
 		private readonly AppIdentityDbContext _context;
 		private readonly UserManager<IdentityUser> _userManager;
-		
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
-		public JwtTokenService(IOptions<JwtSettings> options, IClaimService claimService, AppIdentityDbContext context, UserManager<IdentityUser> userManager)
+		public JwtTokenService(IOptions<JwtSettings> options, IClaimService claimService,
+			AppIdentityDbContext context, UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor)
 		{
 			_jwtSettings = options.Value;
 			_claimService = claimService;
 			_context = context;
 			_userManager = userManager;
+			_httpContextAccessor = httpContextAccessor;
 		}
 
 		public async Task<string> GenerateToken(IdentityUser user)
@@ -62,11 +64,14 @@ namespace JWT.Auth.Services.Implementation
 
 		public async Task SaveRefreshToken(string token, string refreshToken, string userId)
 		{
+			var ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
 			await _context.UserRefreshTokens.AddAsync(new UserRefreshToken
 			{
 				RefreshToken = refreshToken,
 				Token = token,
 				UserId = userId,
+				IpAddress = ipAddress,
 				DateCreated = DateTime.UtcNow,
 				DateExpired = DateTime.UtcNow.AddMinutes(15),
 				IsInvalidated = false
@@ -134,8 +139,10 @@ namespace JWT.Auth.Services.Implementation
 
 		private async Task<UserRefreshToken> ValidateRefreshToken(string refreshToken, string accessToken)
 		{
+			var ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
 			var RefreshToken = await _context.UserRefreshTokens.Where(t => t.RefreshToken == refreshToken
-				&& t.Token == accessToken && !t.IsInvalidated).FirstOrDefaultAsync();
+				&& t.Token == accessToken && t.IpAddress==ipAddress && !t.IsInvalidated).FirstOrDefaultAsync();
 
 			if (RefreshToken == null)
 				throw new SecurityTokenException("Refresh Token Invalid.");

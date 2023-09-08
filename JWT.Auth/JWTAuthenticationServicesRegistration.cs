@@ -18,6 +18,8 @@ namespace JWT.Auth
 	{
 		public static IServiceCollection ConfigureJWTAuthenticationServices (this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddHttpContextAccessor();
+
 			services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
 			services.AddDbContext<AppIdentityDbContext>(options =>

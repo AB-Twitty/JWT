@@ -11,6 +11,7 @@ namespace JWT.Auth.Data
         public int Id { get; set; }
         public string RefreshToken { get; set; }
         public string Token { get; set; }
+        public string IpAddress { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateExpired { get; set; }
         public bool IsInvalidated { get; set; }
