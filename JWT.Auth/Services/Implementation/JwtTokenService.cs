@@ -2,6 +2,7 @@
 using JWT.Auth.Data;
 using JWT.Auth.Models;
 using JWT.Auth.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,7 @@ namespace JWT.Auth.Services.Implementation
 		private readonly IClaimService _claimService;
 		private readonly AppIdentityDbContext _context;
 		private readonly UserManager<IdentityUser> _userManager;
+		
 
 		public JwtTokenService(IOptions<JwtSettings> options, IClaimService claimService, AppIdentityDbContext context, UserManager<IdentityUser> userManager)
 		{
@@ -69,6 +71,8 @@ namespace JWT.Auth.Services.Implementation
 				DateExpired = DateTime.UtcNow.AddMinutes(15),
 				IsInvalidated = false
 			});
+
+			await _context.SaveChangesAsync();
 		}
 
 		public async Task<AuthResponse> RefreshUserTokens(RefreshTokensRequest request)
@@ -77,7 +81,7 @@ namespace JWT.Auth.Services.Implementation
 
 			var expiredRefreshToken = await ValidateRefreshToken(request.RefreshToken, request.AccessToken);
 
-			var userId = expiredAccessToken.Claims.FirstOrDefault(c => c.Type == "uid").ToString();
+			var userId = expiredAccessToken.Claims.FirstOrDefault(c => c.Type == "uid").Value.ToString();
 
 			var user = await _userManager.FindByIdAsync(userId);
 
@@ -122,8 +126,8 @@ namespace JWT.Auth.Services.Implementation
 			if (jwtSecurityToken == null)
 				throw new SecurityTokenException("Access Token Invalid.");
 
-			if (jwtSecurityToken.ValidTo < DateTime.UtcNow)
-				throw new SecurityTokenException("Access Token Not Expired.");
+			/*if (jwtSecurityToken.ValidTo > DateTime.UtcNow)
+				throw new SecurityTokenException("Access Token Not Expired.");*/
 
 			return jwtSecurityToken;
 		}
@@ -133,9 +137,12 @@ namespace JWT.Auth.Services.Implementation
 			var RefreshToken = await _context.UserRefreshTokens.Where(t => t.RefreshToken == refreshToken
 				&& t.Token == accessToken && !t.IsInvalidated).FirstOrDefaultAsync();
 
+			if (RefreshToken == null)
+				throw new SecurityTokenException("Refresh Token Invalid.");
+
 			if (RefreshToken.DateExpired < DateTime.UtcNow)
 				throw new SecurityTokenException("Refresh Token is expired");
-
+			
 			return RefreshToken;
 		}
 

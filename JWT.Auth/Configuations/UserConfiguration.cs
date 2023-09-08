@@ -14,7 +14,9 @@ namespace JWT.Auth.Configuations
 				new IdentityUser
 				{
 					UserName = "Admin",
+					NormalizedUserName = "ADMIN",
 					Email = "admin@localhost.com",
+					NormalizedEmail = "ADMIN@LOCALHOST.COM",
 					PasswordHash = hasher.HashPassword(null, "P@ssword1")
 				});
 		}
