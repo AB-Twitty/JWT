@@ -1,6 +1,8 @@
 ﻿using JWT.Auth.Models;
 using JWT.Auth.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Threading.Tasks;
 
@@ -31,16 +33,27 @@ namespace JWT.Auth.Services.Implementation
 			if (!result.Succeeded)
 				throw new Exception("Invalid Email or Password");
 
+			var token = await _jwtTokenService.GenerateToken(user);
+
+			var refreshToken = await _jwtTokenService.GenerateRefreshToken();
+
+			await _jwtTokenService.SaveRefreshToken(token, refreshToken, user.Id);
+
 			var response = new AuthResponse
 			{
 				Id = user.Id,
 				Email = user.Email,
 				Username = user.UserName,
-				Token = await _jwtTokenService.GenerateToken(user),
-				RefreshToken = await _jwtTokenService.GenerateRefreshToken()
+				Token = token,
+				RefreshToken = refreshToken
 			};
 
 			return response;
+		}
+
+		public async Task<AuthResponse> RefreshTokens (RefreshTokensRequest request)
+		{
+			return await _jwtTokenService.RefreshUserTokens(request);
 		}
 	}
 }

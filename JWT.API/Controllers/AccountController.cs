@@ -19,5 +19,9 @@ namespace JWT.API.Controllers
 		[HttpPost("login")]
 		public async Task<AuthResponse> Login(AuthRequest request) =>
 			await _authService.Login(request);
+
+		[HttpPost("refresh")]
+		public async Task<AuthResponse> Refresh(RefreshTokensRequest request) =>
+			await _authService.RefreshTokens(request);
 	}
 }
