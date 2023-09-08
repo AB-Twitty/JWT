@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace JWT.Auth
@@ -50,6 +51,15 @@ namespace JWT.Auth
 					ClockSkew = TimeSpan.Zero,
 					ValidateAudience = false,
 					ValidateIssuer = false
+				};
+
+				opt.Events = new JwtBearerEvents();
+				opt.Events.OnTokenValidated = async (context) =>
+				{
+					var ipAddress = context.HttpContext.Connection.RemoteIpAddress.ToString();
+					var jwtService = context.Request.HttpContext.RequestServices.GetService<IJwtTokenService>();
+					if (await jwtService.ValidateAccessToken((context.SecurityToken as JwtSecurityToken).RawData, ipAddress) == null)
+						context.Fail("Invalid Token Details.");
 				};
 			});
 

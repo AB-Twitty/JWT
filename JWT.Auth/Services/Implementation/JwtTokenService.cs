@@ -82,7 +82,9 @@ namespace JWT.Auth.Services.Implementation
 
 		public async Task<AuthResponse> RefreshUserTokens(RefreshTokensRequest request)
 		{
-			var expiredAccessToken = ValidateAccessToken(request.AccessToken);
+			var ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
+			var expiredAccessToken = await ValidateAccessToken(request.AccessToken, ipAddress);
 
 			var expiredRefreshToken = await ValidateRefreshToken(request.RefreshToken, request.AccessToken);
 
@@ -112,8 +114,11 @@ namespace JWT.Auth.Services.Implementation
 			};
 		}
 
-		private JwtSecurityToken ValidateAccessToken(string accessToken)
+		public async Task<JwtSecurityToken> ValidateAccessToken(string accessToken, string ipAddress)
 		{
+			if (!await _context.UserRefreshTokens.Where(t => t.Token == accessToken && t.IpAddress == ipAddress).AnyAsync())
+				return null;
+
 			var tokenValidationParameters = new TokenValidationParameters
 			{
 				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)),
